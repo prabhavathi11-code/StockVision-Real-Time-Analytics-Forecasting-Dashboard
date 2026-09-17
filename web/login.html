@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Login - Stock Analytics</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<!-- Top Info Card -->
+<div class="info-card">
+    <h1>St. Ann's College of Engineering and Technology</h1>
+    <h2>CSE - AIML</h2>
+    <p>StockVision: Real-Time Analytics & Forecasting Dashboard</p>
+</div>
+
+<!-- Login Card -->
+<div class="login-container">
+
+    <!-- Left panel: logo -->
+    <div class="login-left">
+        <img src="logo-final.png" class="logo" alt="College Logo">
+    </div>
+
+    <!-- Right panel: login form -->
+    <div class="login-right">
+        <h2 class="team-login">Team Login</h2>
+
+        <input type="text" id="username" placeholder="Enter Name">
+        <input type="password" id="password" placeholder="Enter Password">
+
+        <button onclick="validateUser()">Login</button>
+
+        <p class="note">Real-Time Stock Analytics Dashboard</p>
+    </div>
+
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>
