@@ -1,0 +1,197 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.6),
+        rgba(0, 0, 0, 0.6)
+    ),
+    url("background.jpeg") no-repeat center center / cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Dark overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    z-index: 1;
+}
+
+/* =======================
+   TOP INFO CARD
+======================= */
+.info-card {
+    position: relative;
+    z-index: 2;
+    width: 850px;
+    padding: 25px 30px;
+    margin-bottom: 25px;
+    text-align: center;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.18),
+        rgba(255, 255, 255, 0.08)
+    );
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+}
+
+.info-card h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.6);
+}
+
+.info-card h2 {
+    margin: 8px 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: #00c6ff;
+    letter-spacing: 1px;
+}
+
+.info-card p {
+    margin: 10px 0 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #e6e6e6;
+    opacity: 0.95;
+}
+
+/* =======================
+   LOGIN CARD
+======================= */
+.login-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    width: 850px;
+    height: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.12),
+        rgba(255, 255, 255, 0.05)
+    );
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+}
+
+/* Left panel */
+.login-left {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 300px;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+/* Right panel */
+.login-right {
+    flex: 1;
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.team-login {
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 16px 18px;
+    margin: 14px 0;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+input:focus {
+    box-shadow: 0 0 0 2px rgba(0, 198, 255, 0.6);
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 22px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 114, 255, 0.4);
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* Note */
+.note {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #dcdcdc;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+@media (max-width: 1024px) {
+    .info-card,
+    .login-container {
+        width: 90%;
+    }
+
+    .login-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .logo {
+        width: 220px;
+    }
+
+    .team-login {
+        font-size: 26px;
+    }
+}
