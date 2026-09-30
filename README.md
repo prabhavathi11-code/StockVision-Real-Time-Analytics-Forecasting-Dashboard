@@ -9,7 +9,7 @@ StockVision is an interactive **stock market analytics and forecasting dashboard
 StockVision provides a unified platform for exploring stock market data from two sources:
 
 * **Real-time data** fetched through the Alpha Vantage API
-* **Historical data** uploaded as CSV files
+* **Historical data** uploaded as CSV files      
 
 The application processes the data, calculates technical indicators, visualizes market trends, and provides price forecasts using multiple statistical and machine learning approaches.
 
