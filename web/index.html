@@ -34,7 +34,20 @@
 
         <button onclick="validateUser()">Login</button>
 
-        <p class="note">Real-Time Stock Analytics Dashboard</p>
+        <!-- Quick 1-Click Auto-Login Chips -->
+        <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 12px; color: #b0c4de;">Quick 1-Click Login (Click any member):</span>
+            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                <button type="button" onclick="quickLogin('Ch.Prabhavathi', '@4211')" style="padding: 6px 12px; font-size: 12px; width: auto; margin: 0; background: rgba(0, 198, 255, 0.25); border: 1px solid #00c6ff; border-radius: 20px; color: #fff; cursor: pointer;">⚡ Ch.Prabhavathi</button>
+                <button type="button" onclick="quickLogin('B.Kusuma Priya', '@4203')" style="padding: 6px 12px; font-size: 12px; width: auto; margin: 0; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; color: #fff; cursor: pointer;">⚡ B.Kusuma Priya</button>
+                <button type="button" onclick="quickLogin('A.Teja', '@2303')" style="padding: 6px 12px; font-size: 12px; width: auto; margin: 0; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; color: #fff; cursor: pointer;">⚡ A.Teja</button>
+            </div>
+            <a href="dashboard.html" style="color: #00c6ff; font-size: 13px; margin-top: 8px; text-decoration: underline;">
+                👉 Open Live Analytics Dashboard Directly
+            </a>
+        </div>
+
+        <p class="note" style="margin-top: 12px;">Real-Time Stock Analytics Dashboard</p>
     </div>
 
 </div>

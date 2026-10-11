@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockVision - Real-Time Analytics & Forecasting Dashboard</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<!-- Top Info Card -->
+<div class="info-card">
+    <h1>St. Ann's College of Engineering and Technology</h1>
+    <h2>CSE - AIML</h2>
+    <p>StockVision: Real-Time Analytics & Forecasting Dashboard</p>
+</div>
+
+<!-- Login Card -->
+<div class="login-container">
+
+    <!-- Left panel: logo -->
+    <div class="login-left">
+        <img src="logo-final.png" class="logo" alt="College Logo">
+    </div>
+
+    <!-- Right panel: login form -->
+    <div class="login-right">
+        <h2 class="team-login">Team Login</h2>
+
+        <input type="text" id="username" placeholder="Enter Name">
+        <input type="password" id="password" placeholder="Enter Password">
+
+        <button onclick="validateUser()">Login</button>
+
+        <!-- Quick 1-Click Auto-Login Chips -->
+        <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-size: 12px; color: #b0c4de;">Quick 1-Click Login (Click any member):</span>
+            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                <button type="button" onclick="quickLogin('Ch.Prabhavathi', '@4211')" style="padding: 6px 12px; font-size: 12px; width: auto; margin: 0; background: rgba(0, 198, 255, 0.25); border: 1px solid #00c6ff; border-radius: 20px; color: #fff; cursor: pointer;">⚡ Ch.Prabhavathi</button>
+                <button type="button" onclick="quickLogin('B.Kusuma Priya', '@4203')" style="padding: 6px 12px; font-size: 12px; width: auto; margin: 0; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; color: #fff; cursor: pointer;">⚡ B.Kusuma Priya</button>
+                <button type="button" onclick="quickLogin('A.Teja', '@2303')" style="padding: 6px 12px; font-size: 12px; width: auto; margin: 0; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 20px; color: #fff; cursor: pointer;">⚡ A.Teja</button>
+            </div>
+            <a href="dashboard.html" style="color: #00c6ff; font-size: 13px; margin-top: 8px; text-decoration: underline;">
+                👉 Open Live Analytics Dashboard Directly
+            </a>
+        </div>
+
+        <p class="note" style="margin-top: 12px;">Real-Time Stock Analytics Dashboard</p>
+    </div>
+
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

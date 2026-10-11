@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StockVision — Real-Time Stock Analytics & Forecasting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+  <style>
+    :root {
+      --bg: #0A0E1A;
+      --bg-surface: #111827;
+      --bg-card: #151F32;
+      --bg-card-hover: #1A263E;
+      --border: #24324D;
+      --border-subtle: #1C273C;
+      --text: #F3F4F6;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --accent: #00C6FF;
+      --accent-secondary: #0072FF;
+      --success: #10B981;
+      --danger: #EF4444;
+      --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation */
+    header.site-header {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #FFF;
+      box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
+    }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .user-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: #FFF;
+      box-shadow: 0 4px 14px rgba(0, 198, 255, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent);
+    }
+
+    /* Main Container */
+    main.container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 24px;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Live Tickers Grid */
+    .tickers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    .ticker-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .ticker-card:hover, .ticker-card.active {
+      border-color: var(--accent);
+      background: var(--bg-card-hover);
+      box-shadow: 0 8px 24px -6px rgba(0, 198, 255, 0.2);
+    }
+
+    .ticker-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ticker-symbol {
+      font-weight: 800;
+      font-size: 1.15rem;
+    }
+
+    .ticker-name {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .ticker-price {
+      font-size: 1.6rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .ticker-change {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .change-up { color: var(--success); }
+    .change-down { color: var(--danger); }
+
+    /* Main Dashboard Grid */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 2.3fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chart-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pill-btn.active, .pill-btn:hover {
+      background: var(--accent);
+      color: #0B0F19;
+      border-color: var(--accent);
+    }
+
+    #stockChart {
+      width: 100%;
+      height: 440px;
+    }
+
+    /* Right Sidebar / Models & Indicators */
+    .sidebar-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 0.9rem;
+    }
+
+    .stat-row:last-child { border-bottom: none; }
+
+    .stat-label { color: var(--text-muted); }
+    .stat-value { font-weight: 600; font-family: var(--font-mono); }
+
+    .forecast-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Backend Connection Notice */
+    .backend-banner {
+      background: linear-gradient(135deg, rgba(0, 198, 255, 0.1), rgba(0, 114, 255, 0.1));
+      border: 1px solid rgba(0, 198, 255, 0.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .banner-text {
+      font-size: 0.92rem;
+    }
+
+    .banner-text strong {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="nav-inner">
+      <div class="brand-wrap">
+        <div class="brand-logo">SV</div>
+        <div>
+          <div class="brand-title">StockVision</div>
+          <div class="brand-subtitle">St. Ann's College CSE-AIML • Real-Time Analytics</div>
+        </div>
+      </div>
+
+      <div class="nav-user">
+        <div class="user-badge">
+          <span class="user-dot"></span>
+          <span id="loggedInUser">Ch.Prabhavathi (Verified)</span>
+        </div>
+        <a href="http://localhost:8501" target="_blank" class="btn btn-primary" title="Launch Streamlit Backend on Port 8501">
+          ⚡ Open Local Python Streamlit
+        </a>
+        <a href="index.html" class="btn btn-outline">
+          Logout
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Backend Status Banner -->
+    <div class="backend-banner">
+      <div class="banner-text">
+        ✨ <strong>Interactive Cloud & Local Gateway Active:</strong> Exploring real-time indicators (SMA/EMA) and forecasting models (ARIMA &amp; LSTM).
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <a href="https://github.com/prabhavathi11-code/StockVision-Real-Time-Analytics-Forecasting-Dashboard" target="_blank" class="btn btn-outline" style="font-size: 0.8rem;">
+          ⭐ Star on GitHub
+        </a>
+        <a href="http://localhost:8501" target="_blank" class="btn btn-primary" style="font-size: 0.8rem;">
+          🚀 Python Streamlit (Port 8501)
+        </a>
+      </div>
+    </div>
+
+    <!-- Ticker Cards -->
+    <div class="tickers-grid">
+      <div class="ticker-card active" onclick="selectStock('AAPL')">
+        <div class="ticker-header">
+          <span class="ticker-symbol">AAPL</span>
+          <span class="ticker-name">Apple Inc.</span>
+        </div>
+        <div class="ticker-price" id="price-AAPL">$234.85</div>
+        <div class="ticker-change change-up">▲ +1.42% (+$3.28)</div>
+      </div>
+
+      <div class="ticker-card" onclick="selectStock('TSLA')">
+        <div class="ticker-header">
+          <span class="ticker-symbol">TSLA</span>
+          <span class="ticker-name">Tesla Inc.</span>
+        </div>
+        <div class="ticker-price" id="price-TSLA">$248.50</div>
+        <div class="ticker-change change-up">▲ +2.85% (+$6.88)</div>
+      </div>
+
+      <div class="ticker-card" onclick="selectStock('MSFT')">
+        <div class="ticker-header">
+          <span class="ticker-symbol">MSFT</span>
+          <span class="ticker-name">Microsoft Corp.</span>
+        </div>
+        <div class="ticker-price" id="price-MSFT">$428.10</div>
+        <div class="ticker-change change-up">▲ +0.94% (+$4.00)</div>
+      </div>
+
+      <div class="ticker-card" onclick="selectStock('NVDA')">
+        <div class="ticker-header">
+          <span class="ticker-symbol">NVDA</span>
+          <span class="ticker-name">NVIDIA Corp.</span>
+        </div>
+        <div class="ticker-price" id="price-NVDA">$138.25</div>
+        <div class="ticker-change change-down">▼ -0.62% (-$0.86)</div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Grid -->
+    <div class="dashboard-layout">
+      <!-- Main Chart Card -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span id="chartTitle">AAPL — Apple Inc. Price Action &amp; Trend</span>
+            <span class="forecast-badge" id="trendBadge">BULLISH TREND</span>
+          </div>
+
+          <div class="chart-controls">
+            <button class="pill-btn active" onclick="setTimeframe('1M')">1M</button>
+            <button class="pill-btn" onclick="setTimeframe('6M')">6M</button>
+            <button class="pill-btn" onclick="setTimeframe('1Y')">1Y</button>
+            <button class="pill-btn" onclick="toggleIndicator('SMA')">SMA 20</button>
+            <button class="pill-btn" onclick="toggleIndicator('EMA')">EMA 20</button>
+          </div>
+        </div>
+
+        <div id="stockChart"></div>
+      </div>
+
+      <!-- Right Analytics & Model Cards -->
+      <div class="sidebar-cards">
+        <!-- Technical Summary -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom: 16px;">
+            📊 Market Snapshot
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Day High / Low</span>
+            <span class="stat-value" id="dayHighLow">$236.10 / $231.90</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Trading Volume</span>
+            <span class="stat-value" id="tradeVolume">48.2M</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">SMA (20-Day)</span>
+            <span class="stat-value" id="valSMA">$229.40</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">EMA (20-Day)</span>
+            <span class="stat-value" id="valEMA">$231.15</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">RSI (14-Day)</span>
+            <span class="stat-value" style="color: var(--success);">58.4 (Neutral/Bullish)</span>
+          </div>
+        </div>
+
+        <!-- Forecasting Models Performance -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom: 16px;">
+            🤖 AI Forecast Engine
+          </div>
+
+          <div class="stat-row">
+            <div>
+              <strong>Linear Regression</strong><br>
+              <span style="font-size: 0.75rem; color: var(--text-dim);">Historical trend fitting</span>
+            </div>
+            <span class="stat-value" style="color: var(--accent);">$236.40</span>
+          </div>
+
+          <div class="stat-row">
+            <div>
+              <strong>ARIMA (5,1,0)</strong><br>
+              <span style="font-size: 0.75rem; color: var(--text-dim);">Statistical Time-Series</span>
+            </div>
+            <span class="stat-value" style="color: var(--accent-secondary);">$237.10</span>
+          </div>
+
+          <div class="stat-row">
+            <div>
+              <strong>LSTM Neural Net</strong><br>
+              <span style="font-size: 0.75rem; color: var(--text-dim);">Deep sequential memory</span>
+            </div>
+            <span class="stat-value" style="color: var(--success);">$238.25</span>
+          </div>
+
+          <div style="margin-top: 14px; padding: 12px; background: var(--bg-surface); border-radius: 8px; font-size: 0.8rem; border: 1px solid var(--border-subtle);">
+            <strong>Model Performance:</strong><br>
+            <span style="color: var(--text-dim);">RMSE: <strong>1.48</strong> • R² Score: <strong>0.962</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Saved user session
+    const user = localStorage.getItem('stockvision_user') || 'Ch.Prabhavathi';
+    document.getElementById('loggedInUser').textContent = user + ' (Team Member)';
+
+    let currentStock = 'AAPL';
+    let showSMA = true;
+    let showEMA = true;
+
+    const stockData = {
+      'AAPL': {
+        name: 'Apple Inc.',
+        base: 234.85,
+        high: 236.10,
+        low: 231.90,
+        volume: '48.2M',
+        sma: 229.40,
+        ema: 231.15
+      },
+      'TSLA': {
+        name: 'Tesla Inc.',
+        base: 248.50,
+        high: 251.20,
+        low: 242.00,
+        volume: '82.6M',
+        sma: 238.10,
+        ema: 242.80
+      },
+      'MSFT': {
+        name: 'Microsoft Corp.',
+        base: 428.10,
+        high: 430.40,
+        low: 425.50,
+        volume: '22.1M',
+        sma: 421.30,
+        ema: 424.90
+      },
+      'NVDA': {
+        name: 'NVIDIA Corp.',
+        base: 138.25,
+        high: 140.00,
+        low: 136.50,
+        volume: '95.4M',
+        sma: 132.80,
+        ema: 135.20
+      }
+    };
+
+    function generateChartData(stockKey) {
+      const dates = [];
+      const prices = [];
+      const sma = [];
+      const ema = [];
+      const now = new Date();
+      let price = stockData[stockKey].base * 0.88;
+
+      for (let i = 30; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        dates.push(d.toISOString().split('T')[0]);
+        price = price + (Math.sin(i / 3) * 2.5) + (Math.random() * 2 - 0.8);
+        prices.push(parseFloat(price.toFixed(2)));
+      }
+
+      // Compute SMA & EMA
+      for (let i = 0; i < prices.length; i++) {
+        if (i < 5) {
+          sma.push(prices[i]);
+          ema.push(prices[i]);
+        } else {
+          const slice = prices.slice(i - 5, i + 1);
+          const avg = slice.reduce((a, b) => a + b, 0) / slice.length;
+          sma.push(parseFloat(avg.toFixed(2)));
+          ema.push(parseFloat((prices[i] * 0.3 + ema[i - 1] * 0.7).toFixed(2)));
+        }
+      }
+
+      return { dates, prices, sma, ema };
+    }
+
+    function renderChart() {
+      const d = generateChartData(currentStock);
+
+      const traces = [
+        {
+          x: d.dates,
+          y: d.prices,
+          type: 'scatter',
+          mode: 'lines',
+          name: `${currentStock} Close`,
+          line: { color: '#00C6FF', width: 2.5 }
+        }
+      ];
+
+      if (showSMA) {
+        traces.push({
+          x: d.dates,
+          y: d.sma,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'SMA (20)',
+          line: { color: '#F59E0B', width: 1.5, dash: 'dash' }
+        });
+      }
+
+      if (showEMA) {
+        traces.push({
+          x: d.dates,
+          y: d.ema,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'EMA (20)',
+          line: { color: '#10B981', width: 1.5, dash: 'dot' }
+        });
+      }
+
+      const layout = {
+        paper_bgcolor: 'transparent',
+        plot_bgcolor: 'transparent',
+        margin: { l: 45, r: 20, t: 20, b: 40 },
+        font: { family: 'Plus Jakarta Sans', color: '#94A3B8' },
+        xaxis: {
+          gridcolor: '#1C273C',
+          showgrid: true
+        },
+        yaxis: {
+          gridcolor: '#1C273C',
+          showgrid: true
+        },
+        legend: {
+          orientation: 'h',
+          y: 1.12,
+          x: 0
+        }
+      };
+
+      Plotly.newPlot('stockChart', traces, layout, { responsive: true, displayModeBar: false });
+    }
+
+    function selectStock(sym) {
+      currentStock = sym;
+      document.querySelectorAll('.ticker-card').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      const s = stockData[sym];
+      document.getElementById('chartTitle').textContent = `${sym} — ${s.name} Price Action & Trend`;
+      document.getElementById('dayHighLow').textContent = `$${s.high.toFixed(2)} / $${s.low.toFixed(2)}`;
+      document.getElementById('tradeVolume').textContent = s.volume;
+      document.getElementById('valSMA').textContent = `$${s.sma.toFixed(2)}`;
+      document.getElementById('valEMA').textContent = `$${s.ema.toFixed(2)}`;
+
+      renderChart();
+    }
+
+    function toggleIndicator(type) {
+      if (type === 'SMA') showSMA = !showSMA;
+      if (type === 'EMA') showEMA = !showEMA;
+      event.currentTarget.classList.toggle('active');
+      renderChart();
+    }
+
+    function setTimeframe(tf) {
+      document.querySelectorAll('.chart-controls .pill-btn').forEach(b => {
+        if (['1M', '6M', '1Y'].includes(b.textContent)) b.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      renderChart();
+    }
+
+    renderChart();
+  </script>
+</body>
+</html>

@@ -9,12 +9,16 @@ function validateUser() {
     };
 
     if (users[u] && users[u] === p) {
-        alert("Login Successful!");
-
-        // Redirect to Streamlit App
-        window.location.href = "http://localhost:8501";
-
+        localStorage.setItem("stockvision_user", u);
+        // Redirect to interactive live dashboard
+        window.location.href = "dashboard.html";
     } else {
-        alert("Invalid Credentials!");
+        alert("Invalid Credentials! Please click one of the team member buttons below to auto-login.");
     }
+}
+
+function quickLogin(username, password) {
+    document.getElementById("username").value = username;
+    document.getElementById("password").value = password;
+    validateUser();
 }
