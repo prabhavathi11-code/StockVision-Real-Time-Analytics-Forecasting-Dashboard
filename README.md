@@ -4,6 +4,14 @@
 
 StockVision is an interactive **stock market analytics and forecasting dashboard** built with **Python and Streamlit**. It combines real-time market data with historical stock data to help users analyze price movements, trading volume, technical indicators, and potential future trends through interactive visualizations and forecasting models.
 
+[![Live Portal](https://img.shields.io/badge/Live_Portal-GitHub_Pages-2ea44f?style=for-the-badge&logo=github)](https://prabhavathi11-code.github.io/StockVision-Real-Time-Analytics-Forecasting-Dashboard/)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/prabhavathi11-code/StockVision-Real-Time-Analytics-Forecasting-Dashboard)
+[![Streamlit Cloud](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit)](https://share.streamlit.io)
+
+### 🌐 **Live Links:**
+* 🔗 **Live Web Gateway & Portal:** [https://prabhavathi11-code.github.io/StockVision-Real-Time-Analytics-Forecasting-Dashboard/](https://prabhavathi11-code.github.io/StockVision-Real-Time-Analytics-Forecasting-Dashboard/)
+* 📦 **GitHub Repository:** [https://github.com/prabhavathi11-code/StockVision-Real-Time-Analytics-Forecasting-Dashboard](https://github.com/prabhavathi11-code/StockVision-Real-Time-Analytics-Forecasting-Dashboard)
+
 ## Overview
 
 StockVision provides a unified platform for exploring stock market data from two sources:
