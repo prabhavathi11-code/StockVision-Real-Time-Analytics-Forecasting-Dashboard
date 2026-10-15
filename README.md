@@ -1,6 +1,6 @@
 # StockVision
 
-### Real-Time Stock Analytics & Forecasting Dashboard
+### Real-Time Stock Analytics & Forecasting Dashboard 
 
 StockVision is an interactive **stock market analytics and forecasting dashboard** built with **Python and Streamlit**. It combines real-time market data with historical stock data to help users analyze price movements, trading volume, technical indicators, and potential future trends through interactive visualizations and forecasting models.  
 
