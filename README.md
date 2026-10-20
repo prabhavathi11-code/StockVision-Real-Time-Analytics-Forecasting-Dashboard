@@ -1,4 +1,4 @@
-# StockVision
+# StockVision 
 
 ### Real-Time Stock Analytics & Forecasting Dashboard   
      
