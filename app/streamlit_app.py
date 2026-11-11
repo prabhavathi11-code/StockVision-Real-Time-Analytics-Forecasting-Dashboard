@@ -15,6 +15,9 @@ warnings.filterwarnings("ignore")
 from dotenv import load_dotenv
 import os
 
+# ✅ FIX: Load .env from app/ folder so API key is found correctly
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
+
 # Try heavy libs (graceful fallback)
 try:
     import tensorflow as tf
@@ -214,7 +217,7 @@ st.markdown("""
 <style>
 /* Main Title */
 .big {
-    font-size: 18px;
+    font-size: 36px;
     font-weight: 800;
     color: #0b3d91;
     margin-bottom: 6px;
@@ -222,7 +225,7 @@ st.markdown("""
 
 /* Subtitle */
 .muted {
-    font-size: 36px;
+    font-size: 18px;
     color: #6c757d;
 }
 
